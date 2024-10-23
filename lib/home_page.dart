@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'recipe_category_screen.dart';
 import 'profile_page.dart';
+import 'meal_planning_screen.dart'; // Import the new meal planning screen
+import 'grocery_list_screen.dart'; // Import the new grocery list screen
 
 class HomePage extends StatefulWidget {
   final String userId;
@@ -26,12 +28,12 @@ class _HomePageState extends State<HomePage> {
       RecipeCategoryScreen(
         userId: widget.userId,
       ), // Passing userId to RecipeCategoryScreen
-      Center(
-        child: Text('Meal Planning', style: TextStyle(fontSize: 24)),
-      ),
-      Center(
-        child: Text('Grocery List', style: TextStyle(fontSize: 24)),
-      ),
+      MealPlanningScreen(
+        userId: widget.userId,
+      ), // Add Meal Planning Screen
+      GroceryListScreen(
+        userId: widget.userId,
+      ), // Add Grocery List Screen
     ];
   }
 
@@ -86,8 +88,7 @@ class _HomePageState extends State<HomePage> {
         onTap: _onItemTapped, // Update the selected index
         selectedItemColor: Colors.blue, // Selected item color
         unselectedItemColor: Colors.grey, // Unselected item color
-        backgroundColor:
-            Color(0xFFEBDEF0), // Background color for the navigation bar
+        backgroundColor: Color(0xFFEBDEF0), // Background color for the navigation bar
       ),
     );
   }
