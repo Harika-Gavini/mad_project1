@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'database_helper.dart';
+import 'home_page.dart';
 
 class LoginPage extends StatelessWidget {
   final TextEditingController _userIdController = TextEditingController();
@@ -11,6 +13,8 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Recipe Nest'),
+        centerTitle: true,
+        backgroundColor: Color(0xFFAF7AC5),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -39,17 +43,46 @@ class LoginPage extends StatelessWidget {
                 String userId = _userIdController.text;
                 String password = _passwordController.text;
 
-                var user = await dbHelper.getUser(userId, password);
-
-                if (user != null) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Login Successful!')),
-                  );
-                  // Navigate to home page or dashboard
+                // Platform-specific login logic
+                if (Theme.of(context).platform == TargetPlatform.android ||
+                    Theme.of(context).platform == TargetPlatform.iOS) {
+                  // Mobile: Check against database
+                  var user = await dbHelper.getUser(userId, password);
+                  if (user != null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Login Successful!')),
+                    );
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HomePage(userId: user['user_id']),
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Invalid User ID or Password!')),
+                    );
+                  }
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Invalid User ID or Password!')),
-                  );
+                  // Web: Check against SharedPreferences
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  String storedPassword = prefs.getString(userId) ?? '';
+                  if (storedPassword == password) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Login Successful!')),
+                    );
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HomePage(userId: userId),
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Invalid User ID or Password!')),
+                    );
+                  }
                 }
               },
               child: Text('Login'),
@@ -57,7 +90,8 @@ class LoginPage extends StatelessWidget {
             SizedBox(height: 8),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/signup');
+                Navigator.pushNamed(
+                    context, '/signup'); // Navigate to signup page
               },
               child: Text('Sign Up'),
             ),

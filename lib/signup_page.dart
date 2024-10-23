@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'database_helper.dart';
 
 class SignUpPage extends StatelessWidget {
@@ -17,6 +18,8 @@ class SignUpPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Recipe Nest'),
+        centerTitle: true,
+        backgroundColor: Color(0xFFAF7AC5),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -75,7 +78,6 @@ class SignUpPage extends StatelessWidget {
               SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () async {
-                  // Check if passwords match
                   if (_passwordController.text !=
                       _confirmPasswordController.text) {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -84,16 +86,26 @@ class SignUpPage extends StatelessWidget {
                     return;
                   }
 
-                  // Insert user into database
-                  Map<String, dynamic> user = {
-                    'first_name': _firstNameController.text,
-                    'last_name': _lastNameController.text,
-                    'email': _emailController.text,
-                    'user_id': _userIdController.text,
-                    'password': _passwordController.text,
-                  };
-
-                  await dbHelper.insertUser(user);
+                  // Platform-specific storage
+                  if (Theme.of(context).platform == TargetPlatform.android ||
+                      Theme.of(context).platform == TargetPlatform.iOS) {
+                    // Mobile: Insert user into database
+                    Map<String, dynamic> user = {
+                      'first_name': _firstNameController.text,
+                      'last_name': _lastNameController.text,
+                      'email': _emailController.text,
+                      'user_id': _userIdController.text,
+                      'password': _passwordController.text,
+                    };
+                    await dbHelper.insertUser(user);
+                  } else {
+                    // Web: Store user credentials in SharedPreferences
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    await prefs.setString(
+                        _userIdController.text, _passwordController.text);
+                    // Optionally, store other user data as needed
+                  }
 
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('User registered successfully!')),
