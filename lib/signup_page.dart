@@ -13,6 +13,15 @@ class SignUpPage extends StatelessWidget {
 
   final DatabaseHelper dbHelper = DatabaseHelper();
 
+  // Function to validate the email format
+  bool _isValidEmail(String email) {
+    // Updated regular expression for stricter email validation
+    final RegExp emailRegExp = RegExp(
+      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+    );
+    return emailRegExp.hasMatch(email);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,8 +87,37 @@ class SignUpPage extends StatelessWidget {
               SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () async {
-                  if (_passwordController.text !=
-                      _confirmPasswordController.text) {
+                  String firstName = _firstNameController.text;
+                  String lastName = _lastNameController.text;
+                  String email = _emailController.text;
+                  String userId = _userIdController.text;
+                  String password = _passwordController.text;
+                  String confirmPassword = _confirmPasswordController.text;
+
+                  // Check if any field is empty
+                  if (firstName.isEmpty ||
+                      lastName.isEmpty ||
+                      email.isEmpty ||
+                      userId.isEmpty ||
+                      password.isEmpty ||
+                      confirmPassword.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('All fields are required!')),
+                    );
+                    return;
+                  }
+
+                  // Check if email is in proper format
+                  if (!_isValidEmail(email)) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                          content: Text('Please enter a valid email address!')),
+                    );
+                    return;
+                  }
+
+                  // Check if passwords match
+                  if (password != confirmPassword) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text('Passwords do not match!')),
                     );
@@ -91,19 +129,18 @@ class SignUpPage extends StatelessWidget {
                       Theme.of(context).platform == TargetPlatform.iOS) {
                     // Mobile: Insert user into database
                     Map<String, dynamic> user = {
-                      'first_name': _firstNameController.text,
-                      'last_name': _lastNameController.text,
-                      'email': _emailController.text,
-                      'user_id': _userIdController.text,
-                      'password': _passwordController.text,
+                      'first_name': firstName,
+                      'last_name': lastName,
+                      'email': email,
+                      'user_id': userId,
+                      'password': password,
                     };
                     await dbHelper.insertUser(user);
                   } else {
                     // Web: Store user credentials in SharedPreferences
                     SharedPreferences prefs =
                         await SharedPreferences.getInstance();
-                    await prefs.setString(
-                        _userIdController.text, _passwordController.text);
+                    await prefs.setString(userId, password);
                     // Optionally, store other user data as needed
                   }
 
