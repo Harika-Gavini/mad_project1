@@ -30,8 +30,7 @@ class RecipeCategoryScreen extends StatelessWidget {
   Widget _buildCategoryButton(BuildContext context, String category) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10), // Space between buttons
-      width:
-          MediaQuery.of(context).size.width * 0.75, // 3/4 of the screen width
+      width: MediaQuery.of(context).size.width * 0.75, // 3/4 of the screen width
       child: ElevatedButton(
         onPressed: () {
           // Navigate to the list of recipes for the selected category
@@ -39,7 +38,7 @@ class RecipeCategoryScreen extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => RecipeListScreen(
-                category: category,
+                category: category, // Pass category to RecipeListScreen
                 userId: userId,
               ),
             ),
