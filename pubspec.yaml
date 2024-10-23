@@ -71,12 +71,29 @@ flutter:
     - /Users/joisedivya/mad_project1/assets/Bruschetta.jpeg
     - /Users/joisedivya/mad_project1/assets/caesarsalad.jpeg
     - /Users/joisedivya/mad_project1/assets/chicken noodles soup.jpeg
+    - /Users/joisedivya/mad_project1/assets/chicken%20noodles%20soup.jpeg
     - /Users/joisedivya/mad_project1/assets/chocolatecake.jpeg
     - /Users/joisedivya/mad_project1/assets/cobbsalad.jpeg
     - /Users/joisedivya/mad_project1/assets/eggbenedict.jpeg
     - /Users/joisedivya/mad_project1/assets/fishtaco.jpeg
     - /Users/joisedivya/mad_project1/assets/greeksalad.jpeg
     - /Users/joisedivya/mad_project1/assets/grilled salmon.jpeg
+    - /Users/joisedivya/mad_project1/assets/grilled%20salmon.jpeg
+    - /Users/joisedivya/mad_project1/assets/grilledchicken.jpeg
+    - /Users/joisedivya/mad_project1/assets/icecreamsundae.jpeg
+    - /Users/joisedivya/mad_project1/assets/icedcoffe.jpeg
+    - /Users/joisedivya/mad_project1/assets/Minestrone.jpeg
+    - /Users/joisedivya/mad_project1/assets/mojito.jpeg
+    - /Users/joisedivya/mad_project1/assets/nachos.jpeg
+    - /Users/joisedivya/mad_project1/assets/pancakes.jpeg
+    - /Users/joisedivya/mad_project1/assets/pinacolado.jpeg
+    - /Users/joisedivya/mad_project1/assets/porkchop.jpeg
+    - /Users/joisedivya/mad_project1/assets/shrimpscampi.jpeg
+    - /Users/joisedivya/mad_project1/assets/springrolls.jpeg
+    - /Users/joisedivya/mad_project1/assets/tomato soup.jpeg
+    - /Users/joisedivya/mad_project1/assets/tomato%20soup.jpeg
+
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
