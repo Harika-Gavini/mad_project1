@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'database_helper.dart';
-import 'home_page.dart';
+import 'login_page.dart'; // Import your login page
 
 class ProfilePage extends StatefulWidget {
   final String userId;
@@ -15,11 +15,12 @@ class _ProfilePageState extends State<ProfilePage> {
   final DatabaseHelper dbHelper = DatabaseHelper();
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  bool _isEditing = false; // Track if in editing mode
 
   @override
   void initState() {
     super.initState();
-    _loadProfileData(); // Load profile data on initialization
+    _loadProfileData();
   }
 
   Future<void> _loadProfileData() async {
@@ -37,17 +38,105 @@ class _ProfilePageState extends State<ProfilePage> {
     String fullName = _fullNameController.text;
     String email = _emailController.text;
 
-    // Save the updated profile in the database
     await dbHelper.updateProfile(widget.userId, fullName, email);
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Profile updated successfully')),
     );
 
-    // Navigate back to HomePage after saving
-    Navigator.pushReplacement(
+    setState(() {
+      _isEditing = false; // Exit editing mode after saving
+    });
+  }
+
+  Future<void> _changePassword() async {
+    String? oldPassword;
+    String? newPassword;
+
+    oldPassword = await _showOldPasswordDialog();
+    if (oldPassword == null || oldPassword.isEmpty) return;
+
+    var user = await dbHelper.getUser(widget.userId, oldPassword);
+    if (user == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Old password is incorrect')),
+      );
+      return;
+    }
+
+    newPassword = await _showNewPasswordDialog();
+    if (newPassword == null || newPassword.isEmpty) return;
+
+    await dbHelper.updatePassword(widget.userId, newPassword);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Password updated successfully')),
+    );
+  }
+
+  Future<String?> _showOldPasswordDialog() {
+    TextEditingController oldPasswordController = TextEditingController();
+    return showDialog<String>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Enter Old Password'),
+          backgroundColor: const Color(0xFFAF7AC5),
+          content: TextField(
+            controller: oldPasswordController,
+            decoration: const InputDecoration(hintText: 'Old Password'),
+            obscureText: true,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () =>
+                  Navigator.pop(context, oldPasswordController.text),
+              child: const Text('Confirm'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<String?> _showNewPasswordDialog() {
+    TextEditingController newPasswordController = TextEditingController();
+    return showDialog<String>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Enter New Password'),
+          backgroundColor: const Color(0xFFAF7AC5),
+          content: TextField(
+            controller: newPasswordController,
+            decoration: const InputDecoration(hintText: 'New Password'),
+            obscureText: true,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () =>
+                  Navigator.pop(context, newPasswordController.text),
+              child: const Text('Confirm'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _logout() {
+    Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => HomePage(userId: widget.userId)),
+      MaterialPageRoute(
+          builder: (context) => LoginPage()), // Adjust to your login page
+      (Route<dynamic> route) => false, // Remove all previous routes
     );
   }
 
@@ -56,34 +145,71 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
+        backgroundColor: const Color(0xFFAF7AC5),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () {
+              setState(() {
+                _isEditing = !_isEditing; // Toggle editing mode
+              });
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.lock),
+            onPressed: _changePassword, // Change password action
+          ),
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: _logout, // Logout action
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            TextField(
-              controller: _fullNameController,
-              decoration: const InputDecoration(labelText: 'Full Name'),
+            Row(
+              children: [
+                const Icon(Icons.person),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: TextField(
+                    controller: _fullNameController,
+                    decoration: const InputDecoration(
+                      labelText: 'Full Name',
+                      border: InputBorder.none,
+                    ),
+                    enabled: _isEditing,
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 16),
-            TextField(
-              controller: _emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
+            Row(
+              children: [
+                const Icon(Icons.mail),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: TextField(
+                    controller: _emailController,
+                    decoration: const InputDecoration(
+                      labelText: 'Email',
+                      border: InputBorder.none,
+                    ),
+                    enabled: _isEditing,
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 16),
-            TextField(
-              enabled: false, // User ID is non-editable
-              decoration: InputDecoration(
-                labelText: 'User ID',
-                hintText: widget.userId, // Display the User ID
+            if (_isEditing) ...[
+              ElevatedButton(
+                onPressed: _updateProfile,
+                child: const Text('Save'),
               ),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _updateProfile, // Call _updateProfile when saving
-              child: const Text('Save'),
-            ),
+            ],
           ],
         ),
       ),
