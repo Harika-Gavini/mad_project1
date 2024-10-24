@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'favorite_provider.dart';
 import 'recipe_detail_screen.dart';
+import 'favorite_recipe_screen.dart';
 
 class RecipeListScreen extends StatefulWidget {
   final String userId;
-  final String category; // Add this line
+  final String category;
 
-  // Update the constructor to accept category
-  RecipeListScreen({required this.userId, required this.category});
+  const RecipeListScreen(
+      {super.key, required this.userId, required this.category});
 
   @override
   _RecipeListScreenState createState() => _RecipeListScreenState();
@@ -14,10 +17,13 @@ class RecipeListScreen extends StatefulWidget {
 
 class _RecipeListScreenState extends State<RecipeListScreen> {
   String selectedDietaryOption = 'All'; // Default option
-  List<String> dietaryOptions = ['All', 'Vegetarian', 'Non-Vegetarian', 'Gluten-Free'];
+  List<String> dietaryOptions = [
+    'All',
+    'Vegetarian',
+    'Non-Vegetarian',
+    'Gluten-Free'
+  ];
 
-
-  // Sample data for recipes with image paths, ingredients, instructions, and dietary type
   final Map<String, List<Map<String, dynamic>>> recipes = {
     'Brunch': [
       {
@@ -100,13 +106,52 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
         ],
         'dietaryType': 'Vegetarian',
       },
+      {
+        'name': 'Cobb Salad',
+        'calories': 400,
+        'prepTime': '20 min',
+        'image': 'assets/cobbsalad.jpeg',
+        'ingredients': [
+          '1. Romaine lettuce, chopped',
+          '2. Grilled chicken, diced',
+          '3. Avocado, sliced',
+          '4. Bacon, crumbled',
+          '5. Blue cheese, crumbled',
+          '6. Hard-boiled eggs, sliced',
+        ],
+        'instructions': [
+          '1. Arrange lettuce on a plate.',
+          '2. Top with chicken, avocado, bacon, blue cheese, and eggs.',
+          '3. Drizzle with dressing of your choice.',
+        ],
+        'dietaryType': 'Vegetarian',
+      },
+      {
+        'name': 'Greek Salad',
+        'calories': 250,
+        'prepTime': '10 min',
+        'image': 'assets/greeksalad.jpeg',
+        'ingredients': [
+          '1. Cucumber, diced',
+          '2. Tomatoes, diced',
+          '3. Red onion, sliced',
+          '4. Feta cheese, crumbled',
+          '5. Olive oil and vinegar dressing',
+        ],
+        'instructions': [
+          '1. Combine cucumber, tomatoes, and onion in a bowl.',
+          '2. Add feta cheese and drizzle with dressing.',
+          '3. Toss to combine and serve chilled.',
+        ],
+        'dietaryType': 'Vegetarian',
+      },
     ],
     'Soups': [
       {
         'name': 'Tomato Soup',
         'calories': 150,
         'prepTime': '20 min',
-        'image': 'assets/tomatosoup.jpeg',
+        'image': 'assets/tomato soup.jpeg',
         'ingredients': [
           '1. Tomatoes',
           '2. Onion',
@@ -120,13 +165,53 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
         ],
         'dietaryType': 'Vegetarian',
       },
+      {
+        'name': 'Chicken Noodle Soup',
+        'calories': 200,
+        'prepTime': '25 min',
+        'image': 'assets/chicken noodles soup.jpeg',
+        'ingredients': [
+          '1. 1 lb chicken breast',
+          '2. 4 cups chicken broth',
+          '3. Carrots, diced',
+          '4. Celery, diced',
+          '5. Egg noodles',
+        ],
+        'instructions': [
+          '1. Cook chicken in broth until tender.',
+          '2. Remove chicken and shred it.',
+          '3. Add carrots and celery to broth; simmer until soft.',
+          '4. Add shredded chicken and egg noodles; cook until noodles are done.',
+        ],
+        'dietaryType': 'Non-Vegetarian',
+      },
+      {
+        'name': 'Minestrone',
+        'calories': 180,
+        'prepTime': '35 min',
+        'image': 'assets/Minestrone.jpeg',
+        'ingredients': [
+          '1. 1 can of beans',
+          '2. 1 cup pasta',
+          '3. 1 onion, chopped',
+          '4. 2 carrots, diced',
+          '5. 2 stalks celery, diced',
+          '6. 4 cups vegetable broth',
+        ],
+        'instructions': [
+          '1. Sauté onion, carrots, and celery until soft.',
+          '2. Add broth and bring to a boil.',
+          '3. Stir in pasta and beans; simmer until pasta is cooked.',
+        ],
+        'dietaryType': 'Vegetarian',
+      },
     ],
     'Appetizers': [
       {
         'name': 'Bruschetta',
         'calories': 200,
         'prepTime': '15 min',
-        'image': 'assets/bruschetta.jpeg',
+        'image': 'assets/Bruschetta.jpeg',
         'ingredients': [
           '1. Baguette',
           '2. Tomatoes',
@@ -137,6 +222,45 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
           '1. Toast baguette slices.',
           '2. Mix diced tomatoes with basil and olive oil.',
           '3. Top toasted baguette with tomato mixture.',
+        ],
+        'dietaryType': 'Vegetarian',
+      },
+      {
+        'name': 'Spring Rolls',
+        'calories': 200,
+        'prepTime': '20 min',
+        'image': 'assets/springrolls.jpeg',
+        'ingredients': [
+          '1. Rice paper wrappers',
+          '2. Lettuce leaves',
+          '3. Shrimp or tofu',
+          '4. Vermicelli noodles',
+          '5. Fresh herbs (mint, cilantro)',
+        ],
+        'instructions': [
+          '1. Soak rice paper in warm water until pliable.',
+          '2. Layer lettuce, shrimp/tofu, noodles, and herbs.',
+          '3. Roll tightly and serve with dipping sauce.',
+        ],
+        'dietaryType': 'Non-Vegetarian',
+      },
+      {
+        'name': 'Nachos',
+        'calories': 350,
+        'prepTime': '10 min',
+        'image': 'assets/nachos.jpeg',
+        'ingredients': [
+          '1. Tortilla chips',
+          '2. Shredded cheese',
+          '3. Jalapeños',
+          '4. Salsa',
+          '5. Sour cream (optional)',
+        ],
+        'instructions': [
+          '1. Preheat oven to 350°F (175°C).',
+          '2. Spread chips on a baking sheet.',
+          '3. Top with cheese and jalapeños.',
+          '4. Bake for 10 minutes and serve with salsa and sour cream.',
         ],
         'dietaryType': 'Vegetarian',
       },
@@ -158,25 +282,110 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
         ],
         'dietaryType': 'Non-Vegetarian',
       },
-    ],
-    'Seafood': [
       {
-        'name': 'Shrimp Scampi',
-        'calories': 450,
-        'prepTime': '25 min',
-        'image': 'assets/shrimpscampi.jpeg',
+        'name': 'Beef Steak',
+        'calories': 500,
+        'prepTime': '30 min',
+        'image': 'assets/beafsteak.jpeg',
         'ingredients': [
-          '1. Shrimp',
-          '2. Garlic',
-          '3. Butter',
-          '4. Lemon',
+          '1. 2 ribeye steaks',
+          '2. Olive oil',
+          '3. Salt and pepper',
+          '4. Garlic (optional)',
         ],
         'instructions': [
-          '1. Sauté garlic in butter, add shrimp.',
-          '2. Cook until shrimp are pink, add lemon juice.',
+          '1. Season steaks with salt and pepper.',
+          '2. Heat olive oil in a pan over high heat.',
+          '3. Cook steaks for 4-5 minutes on each side for medium-rare.',
+          '4. Let rest for 5 minutes before serving.',
         ],
         'dietaryType': 'Non-Vegetarian',
       },
+      {
+        'name': 'Pork Chops',
+        'calories': 450,
+        'prepTime': '30 min',
+        'image': 'assets/porkchop.jpeg',
+        'ingredients': [
+          '1. 4 pork chops',
+          '2. Olive oil',
+          '3. Salt and pepper',
+          '4. Garlic powder (optional)',
+        ],
+        'instructions': [
+          '1. Preheat oven to 375°F (190°C).',
+          '2. Season pork chops with salt, pepper, and garlic powder.',
+          '3. Sear chops in a hot skillet for 3-4 minutes per side.',
+          '4. Transfer to the oven and bake for 15-20 minutes.',
+        ],
+        'dietaryType': 'Non-Vegetarian',
+      },
+    ],
+    'Seafood': [
+      {
+        'name': 'Grilled Salmon ',
+        'calories': 450,
+        'prepTime': '25 min',
+        'image': 'assets/grilled salmon.jpeg',
+        'ingredients': [
+          '1. 4 salmon fillets (about 6 ounces each)',
+          '2. 2 tablespoons olive oil',
+          '3. 2 tablespoons lemon juice (freshly squeezed)',
+          '4. 2 cloves garlic, minced',
+          '5. 1 teaspoon dried oregano (or fresh if available)',
+          '6. Salt and pepper, to taste',
+          '7. Lemon wedges (for serving)',
+          '8. Fresh herbs (like dill or parsley, for garnish, optional)',
+        ],
+        'instructions': [
+          '1. Marinate salmon fillets in olive oil, lemon juice, garlic, oregano, salt, and pepper for 30 minutes.',
+          '2. Preheat the grill to medium-high heat.',
+          '3. Grill salmon skin-side down for 4-6 minutes per side until cooked through.',
+          '4. Serve with lemon wedges and garnish with fresh herbs if desired. Enjoy!',
+        ],
+        'dietaryType': 'Non-Vegetarian',
+      },
+      {
+        'name': 'Shrimp Scampi',
+        'calories': 400,
+        'prepTime': '25 min',
+        'image': 'assets/shrimpscampi.jpeg',
+        'ingredients': [
+          '1. 1 lb shrimp, peeled and deveined',
+          '2. 4 cloves garlic, minced',
+          '3. 1/2 cup white wine',
+          '4. 1/4 cup butter',
+          '5. Parsley (for garnish)',
+        ],
+        'instructions': [
+          '1. In a skillet, melt butter over medium heat.',
+          '2. Add garlic and sauté until fragrant.',
+          '3. Add shrimp and cook until pink.',
+          '4. Pour in white wine and simmer for 2-3 minutes.',
+          '5. Garnish with parsley and serve over pasta.',
+        ],
+        'dietaryType': 'Non-Vegetarian',
+      },
+      {
+        'name': 'Fish Tacos',
+        'calories': 300,
+        'prepTime': '30 min',
+        'image': 'assets/fishtaco.jpeg',
+        'ingredients': [
+          '1. 1 lb white fish',
+          '2. Tortillas',
+          '3. Cabbage, shredded',
+          '4. Avocado, sliced',
+          '5. Lime juice',
+        ],
+        'instructions': [
+          '1. Grill or pan-fry fish until cooked.',
+          '2. Warm tortillas in a skillet.',
+          '3. Assemble tacos with fish, cabbage, and avocado.',
+          '4. Squeeze lime juice over the top.',
+        ],
+        'dietaryType': 'Non-Vegetarian',
+      }
     ],
     'Drinks': [
       {
@@ -195,6 +404,42 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
           '2. Fill with ice, top with soda water, stir.',
         ],
         'dietaryType': 'Vegan',
+      },
+      {
+        'name': 'Pinacolado',
+        'calories': 150,
+        'prepTime': '5 min',
+        'image': 'assets/pinacolado.jpeg',
+        'ingredients': [
+          '1. 2 oz light rum',
+          '2. 1 oz coconut cream',
+          '3. 1 oz heavy cream',
+          '4. 6 oz fresh pineapple juice',
+          '5. 1/2 cup crushed ice',
+        ],
+        'instructions': [
+          '1. Blend all ingredients until smooth.',
+          '2. Pour into a chilled glass and garnish with pineapple.',
+        ],
+        'dietaryType': 'Vegetarian',
+      },
+      {
+        'name': 'Iced Coffee',
+        'calories': 120,
+        'prepTime': '5 min',
+        'image': 'assets/icedcoffe.jpeg',
+        'ingredients': [
+          '1. Brewed coffee (chilled)',
+          '2. Ice cubes',
+          '3. Milk or cream (optional)',
+          '4. Sweetener (optional)',
+        ],
+        'instructions': [
+          '1. Fill a glass with ice cubes.',
+          '2. Pour in chilled coffee.',
+          '3. Add milk and sweetener to taste.',
+        ],
+        'dietaryType': 'Vegetarian',
       },
     ],
     'Desserts': [
@@ -217,27 +462,68 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
         ],
         'dietaryType': 'Vegetarian',
       },
+      {
+        'name': 'Ice Cream Sundae',
+        'calories': 300,
+        'prepTime': '10 min',
+        'image': 'assets/icecreamsundae.jpeg',
+        'ingredients': [
+          '1. Ice cream (your choice)',
+          '2. Chocolate syrup',
+          '3. Whipped cream',
+          '4. Cherries (for topping)',
+          '5. Nuts (optional)',
+        ],
+        'instructions': [
+          '1. Scoop ice cream into a bowl.',
+          '2. Drizzle with chocolate syrup.',
+          '3. Top with whipped cream, nuts, and a cherry.',
+        ],
+        'dietaryType': 'Vegetarian',
+      },
+      {
+        'name': 'Apple Pie',
+        'calories': 400,
+        'prepTime': '45 min',
+        'image': 'assets/applepie.jpeg',
+        'ingredients': [
+          '1. 6-8 apples (peeled and sliced)',
+          '2. 1/2 cup sugar',
+          '3. 1 tsp cinnamon',
+          '4. 1/4 tsp nutmeg',
+          '5. 1/4 cup flour',
+          '6. Pie crust (top and bottom)',
+        ],
+        'instructions': [
+          '1. Preheat oven to 425°F (220°C).',
+          '2. Mix apples, sugar, cinnamon, nutmeg, and flour.',
+          '3. Place filling in pie crust and cover with top crust.',
+          '4. Cut slits in the top crust to vent.',
+          '5. Bake for 45-50 minutes until golden brown.',
+        ],
+        'dietaryType': 'Vegetarian',
+      },
     ],
   };
 
   @override
   Widget build(BuildContext context) {
-    // Filter recipes based on selected dietary option for the selected category
+    final favoriteProvider = Provider.of<FavoriteProvider>(context);
+
     List<Map<String, dynamic>> filteredRecipes = recipes[widget.category] ?? [];
-    
-    // Further filter by dietary option
     filteredRecipes = filteredRecipes.where((recipe) {
-      if (selectedDietaryOption == 'All') return true; // Show all recipes
-      return recipe['dietaryType'] == selectedDietaryOption; // Filter by dietary type
+      if (selectedDietaryOption == 'All') return true;
+      return recipe['dietaryType'] == selectedDietaryOption;
     }).toList();
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Recipes - ${widget.category}'), // Display selected category
+        title: Text('Recipes - ${widget.category}'),
+        backgroundColor: const Color(0xFFAF7AC5),
         actions: [
           DropdownButton<String>(
             value: selectedDietaryOption,
-            icon: Icon(Icons.filter_list),
+            icon: const Icon(Icons.filter_list),
             items: dietaryOptions.map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
@@ -250,6 +536,18 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
               });
             },
           ),
+          IconButton(
+            icon: const Icon(Icons.favorite),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => FavoriteRecipesScreen(
+                      favorites: favoriteProvider.favorites),
+                ),
+              );
+            },
+          ),
         ],
       ),
       body: ListView.builder(
@@ -260,7 +558,24 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
             child: ListTile(
               leading: Image.asset(recipe['image']),
               title: Text(recipe['name']),
-              subtitle: Text('${recipe['calories']} calories - ${recipe['prepTime']}'),
+              subtitle: Text(
+                  '${recipe['calories']} calories - ${recipe['prepTime']}'),
+              trailing: IconButton(
+                icon: Icon(
+                  favoriteProvider.isFavorite(recipe)
+                      ? Icons.favorite
+                      : Icons.favorite_border,
+                  color:
+                      favoriteProvider.isFavorite(recipe) ? Colors.red : null,
+                ),
+                onPressed: () {
+                  if (favoriteProvider.isFavorite(recipe)) {
+                    favoriteProvider.removeFavorite(recipe);
+                  } else {
+                    favoriteProvider.addFavorite(recipe);
+                  }
+                },
+              ),
               onTap: () {
                 Navigator.push(
                   context,

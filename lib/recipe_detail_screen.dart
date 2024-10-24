@@ -3,17 +3,18 @@ import 'package:flutter/material.dart';
 class RecipeDetailScreen extends StatelessWidget {
   final Map<String, dynamic> recipe;
 
-  RecipeDetailScreen({required this.recipe});
+  const RecipeDetailScreen({super.key, required this.recipe});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(recipe['name']),
-        backgroundColor: Color(0xFFAF7AC5),
+        backgroundColor: const Color(0xFFAF7AC5),
       ),
       body: Container(
-        color: Color(0xFFEBDEF0), // Set background color for the entire screen
+        color: const Color(
+            0xFFEBDEF0), // Set background color for the entire screen
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -26,10 +27,10 @@ class RecipeDetailScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               // Use a Card to display the recipe details
               Card(
-                margin: EdgeInsets.all(16.0),
+                margin: const EdgeInsets.all(16.0),
                 elevation: 4,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -41,24 +42,24 @@ class RecipeDetailScreen extends StatelessWidget {
                     children: [
                       Text(
                         recipe['name'],
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 24, fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       Text(
                           'Prep Time: ${recipe['prepTime']} | Calories: ${recipe['calories']}'),
-                      SizedBox(height: 10),
-                      Text('Ingredients:',
+                      const SizedBox(height: 10),
+                      const Text('Ingredients:',
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold)),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       for (var ingredient in recipe['ingredients'])
                         Text(ingredient),
-                      SizedBox(height: 20),
-                      Text('Instructions:',
+                      const SizedBox(height: 20),
+                      const Text('Instructions:',
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold)),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       for (var instruction in recipe['instructions'])
                         Text(instruction),
                     ],

@@ -114,6 +114,17 @@ class DatabaseHelper {
     );
   }
 
+  // Update the user's password
+  Future<int> updatePassword(String userId, String newPassword) async {
+    final db = await database;
+    return await db.update(
+      'users',
+      {'password': newPassword},
+      where: 'user_id = ?',
+      whereArgs: [userId],
+    );
+  }
+
   // Insert a new recipe
   Future<int> insertRecipe(Map<String, dynamic> recipe) async {
     final db = await database;
