@@ -5,7 +5,7 @@ import 'home_page.dart';
 class ProfilePage extends StatefulWidget {
   final String userId;
 
-  ProfilePage({required this.userId});
+  const ProfilePage({super.key, required this.userId});
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -13,8 +13,8 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final DatabaseHelper dbHelper = DatabaseHelper();
-  TextEditingController _fullNameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
+  final TextEditingController _fullNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
   @override
   void initState() {
@@ -41,7 +41,7 @@ class _ProfilePageState extends State<ProfilePage> {
     await dbHelper.updateProfile(widget.userId, fullName, email);
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Profile updated successfully')),
+      const SnackBar(content: Text('Profile updated successfully')),
     );
 
     // Navigate back to HomePage after saving
@@ -55,23 +55,23 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: const Text('Profile'),
         centerTitle: true,
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             TextField(
               controller: _fullNameController,
-              decoration: InputDecoration(labelText: 'Full Name'),
+              decoration: const InputDecoration(labelText: 'Full Name'),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               controller: _emailController,
-              decoration: InputDecoration(labelText: 'Email'),
+              decoration: const InputDecoration(labelText: 'Email'),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               enabled: false, // User ID is non-editable
               decoration: InputDecoration(
@@ -79,10 +79,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 hintText: widget.userId, // Display the User ID
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _updateProfile, // Call _updateProfile when saving
-              child: Text('Save'),
+              child: const Text('Save'),
             ),
           ],
         ),

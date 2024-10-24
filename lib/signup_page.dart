@@ -13,6 +13,8 @@ class SignUpPage extends StatelessWidget {
 
   final DatabaseHelper dbHelper = DatabaseHelper();
 
+  SignUpPage({super.key});
+
   // Function to validate the email format
   bool _isValidEmail(String email) {
     // Updated regular expression for stricter email validation
@@ -26,65 +28,65 @@ class SignUpPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Recipe Nest'),
+        title: const Text('Recipe Nest'),
         centerTitle: true,
-        backgroundColor: Color(0xFFAF7AC5),
+        backgroundColor: const Color(0xFFAF7AC5),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
             children: [
               TextField(
                 controller: _firstNameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'First Name',
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextField(
                 controller: _lastNameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Last Name',
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextField(
                 controller: _emailController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Email',
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextField(
                 controller: _userIdController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'User ID',
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextField(
                 controller: _passwordController,
                 obscureText: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Password',
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextField(
                 controller: _confirmPasswordController,
                 obscureText: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Confirm Password',
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () async {
                   String firstName = _firstNameController.text;
@@ -102,7 +104,7 @@ class SignUpPage extends StatelessWidget {
                       password.isEmpty ||
                       confirmPassword.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('All fields are required!')),
+                      const SnackBar(content: Text('All fields are required!')),
                     );
                     return;
                   }
@@ -110,7 +112,7 @@ class SignUpPage extends StatelessWidget {
                   // Check if email is in proper format
                   if (!_isValidEmail(email)) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
+                      const SnackBar(
                           content: Text('Please enter a valid email address!')),
                     );
                     return;
@@ -119,7 +121,7 @@ class SignUpPage extends StatelessWidget {
                   // Check if passwords match
                   if (password != confirmPassword) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Passwords do not match!')),
+                      const SnackBar(content: Text('Passwords do not match!')),
                     );
                     return;
                   }
@@ -145,11 +147,12 @@ class SignUpPage extends StatelessWidget {
                   }
 
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('User registered successfully!')),
+                    const SnackBar(
+                        content: Text('User registered successfully!')),
                   );
                   Navigator.pop(context); // Go back to login page
                 },
-                child: Text('Sign Up'),
+                child: const Text('Sign Up'),
               ),
             ],
           ),
