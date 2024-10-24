@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'favorite_provider.dart';
 import 'recipe_detail_screen.dart';
-import 'favorite_recipe_Screen.dart';
+import 'favorite_recipe_screen.dart';
 
 class RecipeListScreen extends StatefulWidget {
   final String userId;
@@ -21,8 +23,6 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
     'Non-Vegetarian',
     'Gluten-Free'
   ];
-
-  final List<Map<String, dynamic>> favorites = [];
 
   final Map<String, List<Map<String, dynamic>>> recipes = {
     'Brunch': [
@@ -48,7 +48,6 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
           '5. Continue cooking until brown on both sides.',
         ],
         'dietaryType': 'Vegetarian',
-        'isFavorite': false,
       },
       {
         'name': 'Egg Benedict',
@@ -68,7 +67,6 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
           '4. Garnish with chives or parsley.',
         ],
         'dietaryType': 'Non-Vegetarian',
-        'isFavorite': false,
       },
       {
         'name': 'Avocado Toast',
@@ -87,7 +85,6 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
           '3. Season with salt, pepper, and drizzle with olive oil.',
         ],
         'dietaryType': 'Vegetarian',
-        'isFavorite': false,
       },
     ],
     'Salads': [
@@ -108,7 +105,6 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
           '3. Drizzle with Caesar dressing and toss to combine.',
         ],
         'dietaryType': 'Vegetarian',
-        'isFavorite': false,
       },
       {
         'name': 'Cobb Salad',
@@ -129,7 +125,6 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
           '3. Drizzle with dressing of your choice.',
         ],
         'dietaryType': 'Vegetarian',
-        'isFavorite': false,
       },
       {
         'name': 'Greek Salad',
@@ -149,7 +144,6 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
           '3. Toss to combine and serve chilled.',
         ],
         'dietaryType': 'Vegetarian',
-        'isFavorite': false,
       },
     ],
     'Soups': [
@@ -157,7 +151,7 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
         'name': 'Tomato Soup',
         'calories': 150,
         'prepTime': '20 min',
-        'image': 'assets/tomatosoup.jpeg',
+        'image': 'assets/tomato soup.jpeg',
         'ingredients': [
           '1. Tomatoes',
           '2. Onion',
@@ -170,7 +164,6 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
           '3. Blend until smooth and serve.',
         ],
         'dietaryType': 'Vegetarian',
-        'isFavorite': false,
       },
       {
         'name': 'Chicken Noodle Soup',
@@ -191,7 +184,6 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
           '4. Add shredded chicken and egg noodles; cook until noodles are done.',
         ],
         'dietaryType': 'Non-Vegetarian',
-        'isFavorite': false,
       },
       {
         'name': 'Minestrone',
@@ -212,7 +204,6 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
           '3. Stir in pasta and beans; simmer until pasta is cooked.',
         ],
         'dietaryType': 'Vegetarian',
-        'isFavorite': false,
       },
     ],
     'Appetizers': [
@@ -220,7 +211,7 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
         'name': 'Bruschetta',
         'calories': 200,
         'prepTime': '15 min',
-        'image': 'assets/bruschetta.jpeg',
+        'image': 'assets/Bruschetta.jpeg',
         'ingredients': [
           '1. Baguette',
           '2. Tomatoes',
@@ -233,7 +224,6 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
           '3. Top toasted baguette with tomato mixture.',
         ],
         'dietaryType': 'Vegetarian',
-        'isFavorite': false,
       },
       {
         'name': 'Spring Rolls',
@@ -252,8 +242,7 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
           '2. Layer lettuce, shrimp/tofu, noodles, and herbs.',
           '3. Roll tightly and serve with dipping sauce.',
         ],
-        'dietaryType': 'Vegetarian',
-        'isFavorite': false,
+        'dietaryType': 'Non-Vegetarian',
       },
       {
         'name': 'Nachos',
@@ -274,7 +263,6 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
           '4. Bake for 10 minutes and serve with salsa and sour cream.',
         ],
         'dietaryType': 'Vegetarian',
-        'isFavorite': false,
       },
     ],
     'Meat': [
@@ -293,7 +281,6 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
           '2. Grill until cooked through.',
         ],
         'dietaryType': 'Non-Vegetarian',
-        'isFavorite': false,
       },
       {
         'name': 'Beef Steak',
@@ -313,7 +300,6 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
           '4. Let rest for 5 minutes before serving.',
         ],
         'dietaryType': 'Non-Vegetarian',
-        'isFavorite': false,
       },
       {
         'name': 'Pork Chops',
@@ -333,27 +319,31 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
           '4. Transfer to the oven and bake for 15-20 minutes.',
         ],
         'dietaryType': 'Non-Vegetarian',
-        'isFavorite': false,
       },
     ],
     'Seafood': [
       {
-        'name': 'Shrimp Scampi',
+        'name': 'Grilled Salmon ',
         'calories': 450,
         'prepTime': '25 min',
-        'image': 'assets/shrimpscampi.jpeg',
+        'image': 'assets/grilled salmon.jpeg',
         'ingredients': [
-          '1. Shrimp',
-          '2. Garlic',
-          '3. Butter',
-          '4. Lemon',
+          '1. 4 salmon fillets (about 6 ounces each)',
+          '2. 2 tablespoons olive oil',
+          '3. 2 tablespoons lemon juice (freshly squeezed)',
+          '4. 2 cloves garlic, minced',
+          '5. 1 teaspoon dried oregano (or fresh if available)',
+          '6. Salt and pepper, to taste',
+          '7. Lemon wedges (for serving)',
+          '8. Fresh herbs (like dill or parsley, for garnish, optional)',
         ],
         'instructions': [
-          '1. Sauté garlic in butter, add shrimp.',
-          '2. Cook until shrimp are pink, add lemon juice.',
+          '1. Marinate salmon fillets in olive oil, lemon juice, garlic, oregano, salt, and pepper for 30 minutes.',
+          '2. Preheat the grill to medium-high heat.',
+          '3. Grill salmon skin-side down for 4-6 minutes per side until cooked through.',
+          '4. Serve with lemon wedges and garnish with fresh herbs if desired. Enjoy!',
         ],
         'dietaryType': 'Non-Vegetarian',
-        'isFavorite': false,
       },
       {
         'name': 'Shrimp Scampi',
@@ -375,7 +365,6 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
           '5. Garnish with parsley and serve over pasta.',
         ],
         'dietaryType': 'Non-Vegetarian',
-        'isFavorite': false,
       },
       {
         'name': 'Fish Tacos',
@@ -396,7 +385,6 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
           '4. Squeeze lime juice over the top.',
         ],
         'dietaryType': 'Non-Vegetarian',
-        'isFavorite': false,
       }
     ],
     'Drinks': [
@@ -416,7 +404,6 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
           '2. Fill with ice, top with soda water, stir.',
         ],
         'dietaryType': 'Vegan',
-        'isFavorite': false,
       },
       {
         'name': 'Pinacolado',
@@ -435,7 +422,6 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
           '2. Pour into a chilled glass and garnish with pineapple.',
         ],
         'dietaryType': 'Vegetarian',
-        'isFavorite': false,
       },
       {
         'name': 'Iced Coffee',
@@ -454,7 +440,6 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
           '3. Add milk and sweetener to taste.',
         ],
         'dietaryType': 'Vegetarian',
-        'isFavorite': false,
       },
     ],
     'Desserts': [
@@ -476,7 +461,6 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
           '3. Bake until a toothpick comes out clean.',
         ],
         'dietaryType': 'Vegetarian',
-        'isFavorite': false,
       },
       {
         'name': 'Ice Cream Sundae',
@@ -496,7 +480,6 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
           '3. Top with whipped cream, nuts, and a cherry.',
         ],
         'dietaryType': 'Vegetarian',
-        'isFavorite': false,
       },
       {
         'name': 'Apple Pie',
@@ -519,26 +502,24 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
           '5. Bake for 45-50 minutes until golden brown.',
         ],
         'dietaryType': 'Vegetarian',
-        'isFavorite': false,
       },
     ],
   };
 
   @override
   Widget build(BuildContext context) {
-    List<Map<String, dynamic>> filteredRecipes = recipes[widget.category] ?? [];
+    final favoriteProvider = Provider.of<FavoriteProvider>(context);
 
-    // Further filter by dietary option
+    List<Map<String, dynamic>> filteredRecipes = recipes[widget.category] ?? [];
     filteredRecipes = filteredRecipes.where((recipe) {
-      if (selectedDietaryOption == 'All') return true; // Show all recipes
-      return recipe['dietaryType'] ==
-          selectedDietaryOption; // Filter by dietary type
+      if (selectedDietaryOption == 'All') return true;
+      return recipe['dietaryType'] == selectedDietaryOption;
     }).toList();
 
     return Scaffold(
       appBar: AppBar(
-        title:
-            Text('Recipes - ${widget.category}'), // Display selected category
+        title: Text('Recipes - ${widget.category}'),
+        backgroundColor: const Color(0xFFAF7AC5),
         actions: [
           DropdownButton<String>(
             value: selectedDietaryOption,
@@ -561,8 +542,8 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      FavoriteRecipesScreen(favorites: favorites),
+                  builder: (context) => FavoriteRecipesScreen(
+                      favorites: favoriteProvider.favorites),
                 ),
               );
             },
@@ -581,18 +562,18 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                   '${recipe['calories']} calories - ${recipe['prepTime']}'),
               trailing: IconButton(
                 icon: Icon(
-                  recipe['isFavorite'] ? Icons.favorite : Icons.favorite_border,
-                  color: recipe['isFavorite'] ? Colors.red : null,
+                  favoriteProvider.isFavorite(recipe)
+                      ? Icons.favorite
+                      : Icons.favorite_border,
+                  color:
+                      favoriteProvider.isFavorite(recipe) ? Colors.red : null,
                 ),
                 onPressed: () {
-                  setState(() {
-                    recipe['isFavorite'] = !recipe['isFavorite'];
-                    if (recipe['isFavorite']) {
-                      favorites.add(recipe);
-                    } else {
-                      favorites.remove(recipe);
-                    }
-                  });
+                  if (favoriteProvider.isFavorite(recipe)) {
+                    favoriteProvider.removeFavorite(recipe);
+                  } else {
+                    favoriteProvider.addFavorite(recipe);
+                  }
                 },
               ),
               onTap: () {

@@ -3,9 +3,16 @@ import 'login_page.dart';
 import 'signup_page.dart';
 import 'home_page.dart';
 import 'profile_page.dart';
+import 'favorite_provider.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => FavoriteProvider(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
