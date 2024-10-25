@@ -1,7 +1,9 @@
-Recipe Nest
+Recipe Nest:
+
 Recipe Nest is a mobile application built with Flutter, designed to streamline meal planning, recipe browsing, and grocery list management. It provides a clean, user-friendly interface that helps users manage their food-related activities efficiently. The app allows users to plan weekly meals, create a customized grocery list, and view personalized meal suggestions based on their dietary preferences. Recipe Nest is a comprehensive tool for anyone looking to organize their meal planning in one accessible place.
 
-Features
+Features:
+
 Meal Planning: Easily plan meals for each day of the week and customize selections based on available recipes.
 Recipe Browsing: Browse through a variety of categorized recipes, filtered by dietary preferences (Vegetarian, Non-Vegetarian, etc.).
 Grocery List Management: Add, view, and delete items from a grocery list tailored to your meal plans.
@@ -100,9 +102,6 @@ A Bottom Navigation Bar is used for seamless navigation across these screens.
 
 Profile Page:
 
-
-
-
 Users can view and update their profile details, further customizing their experience.
 
 Detailed Features
@@ -137,9 +136,6 @@ App Architecture
 
 Recipe Nest is structured with scalability in mind:
 
-
-
-
 UI Layer: Built with Flutter widgets like Scaffold, AppBar, ListView, and BottomNavigationBar.
 
 Business Logic: Managed through stateful widgets and setState().
@@ -149,9 +145,6 @@ Data Layer: Stores data locally for the meal plan and grocery list. Future updat
 Potential Enhancements
 
 In future versions, Recipe Nest could include:
-
-
-
 
 API Integration: Fetch real-time recipes and grocery lists from online sources.
 
