@@ -4,7 +4,7 @@ Recipe Nest is a mobile application built with Flutter, designed to streamline m
 
 ---
 ## Presentation
-For a detailed overview, check out the [Recipe Nest Presentation]([https://your-permalink-here](https://github.com/Harika-Gavini/mad_project1/blob/9d1fbfd4594e5fb6ad580388734fab4d0e66d472/RECIPE_NEST_finalppt*.pptx)).
+For a detailed overview, check out the [Recipe Nest Presentation](https://github.com/Harika-Gavini/mad_project1/blob/9d1fbfd4594e5fb6ad580388734fab4d0e66d472/RECIPE_NEST_finalppt*.pptx).
 
 
 ----
