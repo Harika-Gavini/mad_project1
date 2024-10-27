@@ -1,7 +1,12 @@
 #**Recipe Nest**:
 
 Recipe Nest is a mobile application built with Flutter, designed to streamline meal planning, recipe browsing, and grocery list management. It provides a clean, user-friendly interface that helps users manage their food-related activities efficiently. The app allows users to plan weekly meals, create a customized grocery list, and view personalized meal suggestions based on their dietary preferences. Recipe Nest is a comprehensive tool for anyone looking to organize their meal planning in one accessible place.
+
 ---
+## Presentation
+For a detailed overview, check out the [![Recipe Nest Presentation]([https://github.com/Harika-Gavini/mad_project1/blob/7e01bbf8b385cf6be474afdda481d5f5cf6b9d00/WhatsApp%20Image%202024-10-27%20at%2006.50.32.jpeg)](https://github.com/Harika-Gavini/mad_project1/blob/main/your_ppt_file.pptx](https://github.com/Harika-Gavini/mad_project1/blob/9d1fbfd4594e5fb6ad580388734fab4d0e66d472/RECIPE_NEST_finalppt*.pptx))
+
+----
 
 ##**Features**:
 
